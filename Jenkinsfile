@@ -7,7 +7,7 @@ pipeline
         {
             steps
             {
-                git 'https://github.com/Ak-1920/Maven34.git'
+                git 'https://github.com/Ak-1920/Maven345.git'
             }
 
         }
