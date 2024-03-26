@@ -4,7 +4,7 @@ pipeline
     agent any
     stages
     {
-        stage('ContDownload_Master')
+        stage('ContDownload')
         {
             steps
             {
@@ -14,7 +14,7 @@ pipeline
                 }
             }
         }
-        stage('contBuild_Master')
+        stage('contBuild')
         {
             steps
             {
@@ -24,7 +24,7 @@ pipeline
                 }
             }
         }
-        stage('ContDeploy_Master')
+        stage('ContDeploy')
         {
             steps
             {
