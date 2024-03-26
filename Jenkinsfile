@@ -1,45 +1,59 @@
+@Library('mylibrary')_
 pipeline
 {
     agent any
     stages
     {
-        stage('Download')
+        stage('ContinuousDownload_Master')
         {
             steps
             {
-                git 'https://github.com/Ak-1920/Maven345.git'
+                script
+                {
+                    cicd.gitdownload("Maven345")
+                }
             }
-
         }
-        stage('Build')
+        stage('continuousBuild_Master')
         {
             steps
             {
-                sh 'mvn package'
+                script
+                {
+                    cicd.mavenbuild()
+                }
             }
         }
-        stage('Deploy')
+        stage('ContinuousDeploy_Master')
         {
             steps
             {
-                deploy adapters: [tomcat9(credentialsId: 'ff45d6f7-f150-4059-8cad-3a79ca310759', path: '', url: 'http://172.31.47.88:8080')], contextPath: 'testapp', onFailure: false, war: '**/*.war'
+                script
+                {
+                    cicd.deploy("Sharedlib","172.31.12.246","testapp")
+                }
             }
         }
-        stage('Test')
+        stage('ContinuousTesting_Master')
         {
             steps
             {
-                git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
-                sh 'java -jar /var/lib/jenkins/workspace/FirstJob/testing.jar'
+                script
+                {
+                    cicd.gitdownload("Testing")
+                    cicd.runSelenium("Sharedlib")
+                }
             }
         }
-        stage('Delivery')
+        stage('ContinuousDelivery_Master')
         {
             steps
             {
-                deploy adapters: [tomcat9(credentialsId: '72722bd4-d861-4047-82f4-920d377c1345', path: '', url: 'http://172.31.43.203:8080')], contextPath: 'prodapp', onFailure: false, war: '**/*.war'
+                script
+                {
+                    cicd.deploy("Sharedlib","172.31.3.129","prod")
+                }
             }
         }
-
     }
 }
